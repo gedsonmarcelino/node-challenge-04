@@ -19,7 +19,11 @@ class UsersRepository implements IUsersRepository {
   }
 
   create({ name, email }: ICreateUserDTO): User {
-    const user = new User(name, email);
+    const user = new User();
+    Object.assign(user, {
+      name,
+      email,
+    });
     this.users.push(user);
     return user;
   }
@@ -34,7 +38,7 @@ class UsersRepository implements IUsersRepository {
 
   turnAdmin(receivedUser: User): User {
     let changedUser = null;
-    this.users.map((user) => {
+    this.users = this.users.map((user) => {
       if (user.id === receivedUser.id) {
         changedUser = { ...user, admin: true };
         return changedUser;
